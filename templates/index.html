@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cilegon Juare - Artificial Intelligence for Education</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" type="image/png+xml" href="{{ url_for('static', filename='icon.png') }}">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Cilegon Juare Logo" class="logo">
+            <p>Cilegon Juare</p>
+        </div>
+    </header>
+
+    <main>
+        <div class="sidebar">
+            <h2>Daftar Dokumen</h2>
+            <div class="pdf-list">
+                {% for pdf in pdfs %}
+                <div class="pdf-item" data-filename="{{ pdf }}">
+                    <span class="pdf-icon">📄</span>
+                    <span class="pdf-name">{{ pdf }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="pdf-viewer">
+            <div id="pdf-container">
+                <div class="no-pdf-message">
+                    <p>Pilih file dokumen dari daftar atau unggah dokumen baru</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-section">
+            <div class="upload-container" id="drop-zone">
+                <div class="upload-content">
+                    <span class="upload-icon">📁</span>
+                    <p>Seret dan letakan Dokumen disini</p>
+                    <p>atau</p>
+                    <label class="upload-button" for="file-input">
+                        Pilih dokumen
+                        <input type="file" id="file-input" accept=".pdf" hidden>
+                    </label>
+                </div>
+                <div class="upload-progress" hidden>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <p class="progress-text">Uploading... 0%</p>
+                </div>
+            </div>
+
+            <div class="chat-container">
+                <div class="chat-messages" id="chat-messages"></div>
+                <div class="chat-input-container">
+                    <input type="text" id="chat-input" placeholder="Masukan pertanyaan anda...">
+                    <button id="send-button" class="send-button">
+                        <span class="send-icon">➤</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 Cilegon Juare - AI.Edu | Version 1.0</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
