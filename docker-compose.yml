@@ -21,7 +21,7 @@ services:
           cpus: '0.5'
           memory: 512M
     healthcheck:
-      test: ["CMD", "curl", "--fail", "http://localhost:5000/", "||" ,"exit", "1"]
+      test: ["CMD-SHELL", "curl --fail http://localhost:5000/ || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -30,7 +30,8 @@ services:
     networks:
       - app-network
     depends_on:
-      - ollama
+      ollama:
+        condition: service_healthy
 
   ollama:
     image: ollama/ollama:latest
@@ -48,12 +49,18 @@ services:
     networks:
       - app-network
     healthcheck:
-      test: ["CMD", "curl", "--fail", "http://localhost:11434/api/health", "||" ,"exit", "1"]
+      test: ["CMD-SHELL", "curl --fail http://localhost:11434/api/health || exit 1"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
-    command: ["/bin/sh", "-c", "ollama serve & sleep 10 && ollama pull llama3.2:1B && ollama run llama3.2:1B & tail -f /dev/null"]
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        ollama serve & 
+        sleep 10 && ollama pull llama3.2:1B && 
+        ollama run llama3.2:1B & 
+        tail -f /dev/null"
 
 networks:
   app-network:
